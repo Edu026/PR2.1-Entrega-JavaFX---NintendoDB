@@ -1,3 +1,5 @@
+#Eduardo Amorós López
+
 # Exemple d'aplicació adaptativa amb JavaFX #
 
 En aquest projecte un exemple d'aplicació adaptadiva amb .fxml
