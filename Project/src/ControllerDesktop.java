@@ -140,20 +140,58 @@ public class ControllerDesktop implements Initializable
         URL resource = this.getClass().getResource("assets/layout_info_item.fxml");
 
         // Esborrar la informació actual
-        info.getChildren().clear();
+        //info.getChildren().clear();
             // Carregar la llista amb les dades
         try {
-            //Carrega el Layout 
+            info.getChildren().clear();
+            //Carrega el Layout     
+            switch (type) {
+                case "Consoles": resource = this.getClass().getResource("assets/layout_info_consola.fxml"); break;
+                case "Jocs": resource = this.getClass().getResource("assets/layout_info_joc.fxml") ; break;
+                case "Personatges": resource = this.getClass().getResource("assets/layout_info_personatge.fxml"); break;
+            }
+
             FXMLLoader loader = new FXMLLoader(resource);
             Parent itemTemplate = loader.load();
-            ControllerInfoItem itemController = loader.getController();
-            itemController.setImage("assets/images/" + dades.getString("imatge"));
-            itemController.setTitle(dades.getString("nom"));
+
+            ControllerInfoPersonatge personatgeController = null;
+            ControllerInfoJoc jocController = null;
+            ControllerInfoConsola consolaController = null;
+
+
+
             switch (type) {
-                case "Consoles": itemController.setText(dades.getString("procesador")); break;
-                case "Jocs": itemController.setText(dades.getString("descripcio")); break;
-                case "Personatges": itemController.setText(dades.getString("nom_del_videojoc")); break;
+                case "Consoles": consolaController = loader.getController(); break;
+                case "Jocs": jocController = loader.getController() ; break;
+                case "Personatges": personatgeController = loader.getController(); break;
             }
+
+            
+            switch (type) {
+                case "Consoles":{
+                    consolaController.setImage("assets/images/" + dades.getString("imatge"));
+                    consolaController.setTitle(dades.getString("nom"));
+                    consolaController.setData(dades.getString("data"));
+                    consolaController.setProcesador(dades.getString("procesador")); 
+                    consolaController.setColor(dades.getString("color"));
+                    consolaController.setVenudes(dades.getInt("venudes"));break;
+                }
+                case "Jocs": {
+                    jocController.setImage("assets/images/" + dades.getString("imatge"));
+                    jocController.setTitle(dades.getString("nom"));
+                    jocController.setAny(dades.getInt("any"));
+                    jocController.setTipus(dades.getString("tipus"));
+                    jocController.setDescripcio(dades.getString("descripcio")); break;
+                    
+                }   
+                case "Personatges": {
+                    personatgeController.setImage("assets/images/" + dades.getString("imatge"));
+                    personatgeController.setTitle(dades.getString("nom"));
+                    personatgeController.setText(dades.getString("nom_del_videojoc"));
+                    personatgeController.setColor(dades.getString("color"));break;
+                }
+            }
+            
             
             // Afegeix la informació a la vista
             info.getChildren().add(itemTemplate);
@@ -162,7 +200,7 @@ public class ControllerDesktop implements Initializable
             AnchorPane.setRightAnchor(itemTemplate, 0.0);
             AnchorPane.setBottomAnchor(itemTemplate, 0.0);
             AnchorPane.setLeftAnchor(itemTemplate, 0.0);
-    
+            
         } catch (Exception e) {
           System.out.println("ControllerDesktop: Error showing info.");
           System.out.println(e);
